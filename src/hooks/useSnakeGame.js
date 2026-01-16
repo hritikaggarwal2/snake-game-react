@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { submitScore } from "../api/leaderboard";
+import { isDown, isLeft, isRight, isUp } from "../helpers/input";
 
 const BOARD_SIZE = 16;
 const INITIAL_SNAKE = [
@@ -13,7 +14,9 @@ const ALL_DIRECTIONS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", 
 export default function useSnakeGame() {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
 
-  // TODO 3 : Add direction state and ref
+  const [direction, setDirection] = useState(INITIAL_DIRECTION);
+  const directionRef = useRef(INITIAL_DIRECTION);
+  directionRef.current = direction;
 
   // TODO 4 : Add food state
 
@@ -28,8 +31,22 @@ export default function useSnakeGame() {
         setStarted(true);
       }
 
-      // TODO 3 : Handle user input
-      // TODO 3 : Update direction state
+      let newDir = null;
+
+      if (isUp(e.key) && directionRef.current.y !== 1) {
+        newDir = { x: 0, y: -1 };
+      } else if (isDown(e.key) && directionRef.current.y !== -1) {
+        newDir = { x: 0, y: 1 };
+      } else if (isLeft(e.key) && directionRef.current.x !== 1) {
+        newDir = { x: -1, y: 0 };
+      } else if (isRight(e.key) && directionRef.current.x !== -1) {
+        newDir = { x: 1, y: 0 };
+      }
+
+      if (newDir) {
+        setDirection(newDir);
+        directionRef.current = newDir;
+      }
     }
 
     // Add event listener for keydown
@@ -46,8 +63,8 @@ export default function useSnakeGame() {
     const interval = setInterval(() => {
       setSnake((prevSnake) => {
         const newHead = {
-          x: prevSnake[0].x + INITIAL_DIRECTION.x,
-          y: prevSnake[0].y + INITIAL_DIRECTION.y,
+          x: prevSnake[0].x + directionRef.current.x,
+          y: prevSnake[0].y + directionRef.current.y,
         };
 
         return [newHead, ...prevSnake.slice(0, -1)];
@@ -76,7 +93,7 @@ export default function useSnakeGame() {
   // Reset the state when we play again
   function handleRestart() {
     setSnake(INITIAL_SNAKE);
-    // TODO 3 : Reset the direction state
+    setDirection(INITIAL_DIRECTION);
     // TODO 4 : Reset the food state
 
     setScore(0);
