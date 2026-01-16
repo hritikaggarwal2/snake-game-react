@@ -5,7 +5,6 @@ const BOARD_SIZE = 16;
 const INITIAL_SNAKE = [
   { x: 8, y: 8 },
   { x: 7, y: 8 },
-  { x: 6, y: 8 },
 ];
 const INITIAL_DIRECTION = { x: 1, y: 0 };
 const SPEED = 120;

@@ -6,6 +6,12 @@ const SnakeBlock = ({ segment, index }) => (
   />
 );
 
-const Snake = ({ snake }) => <>{/* TODO 1: Render snake segments here */}</>;
+const Snake = ({ snake }) => (
+  <>
+    {snake.map((segment, index) => (
+      <SnakeBlock key={index} segment={segment} index={index} />
+    ))}
+  </>
+);
 
 export default Snake;
