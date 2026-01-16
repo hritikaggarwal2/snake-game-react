@@ -2,6 +2,7 @@ import "./App.css";
 import Food from "./components/Food";
 import GameBoard from "./components/GameBoard";
 import GameOver from "./components/GameOver";
+import Score from "./components/Score";
 import Snake from "./components/Snake";
 
 import useSnakeGame from "./hooks/useSnakeGame";
@@ -12,8 +13,7 @@ function App() {
   return (
     <div className="snake-app">
       <h1>🐍 8-bit Snake Game</h1>
-
-      {/* TODO 6 : Add score */}
+      <Score score={score} />
 
       <GameBoard boardSize={BOARD_SIZE}>
         <Snake snake={snake} />

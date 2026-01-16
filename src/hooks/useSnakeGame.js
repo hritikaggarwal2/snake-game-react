@@ -84,11 +84,10 @@ export default function useSnakeGame() {
         if (didCollideWithFood(newHead, food)) {
           newSnake = [newHead, ...prevSnake];
           setFood(getRandomFood(newSnake, BOARD_SIZE));
+          setScore((prevScore) => prevScore + 5);
         } else {
           newSnake = [newHead, ...prevSnake.slice(0, -1)];
         }
-
-        // TODO 6 : Update score
 
         return newSnake;
       });
