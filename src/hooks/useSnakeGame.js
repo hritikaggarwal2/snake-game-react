@@ -71,7 +71,6 @@ export default function useSnakeGame() {
 
         // TODO 5 : Handle wall collision
         // TODO 5 : Handle self collision
-        // TODO 4 : Handle food eating
         let newSnake = null;
 
         if (didCollideWithFood(newHead, food)) {
@@ -105,7 +104,7 @@ export default function useSnakeGame() {
   function handleRestart() {
     setSnake(INITIAL_SNAKE);
     setDirection(INITIAL_DIRECTION);
-    // TODO 4 : Reset the food state
+    setFood(getRandomFood(INITIAL_SNAKE, BOARD_SIZE));
 
     setScore(0);
     setGameOver(false);
