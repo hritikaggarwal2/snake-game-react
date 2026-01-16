@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { submitScore } from "../api/leaderboard";
-import { didCollideWithFood } from "../helpers/collisions";
+import { didCollideWithFood, didCollideWithSelf, didCollideWithWall } from "../helpers/collisions";
 import getRandomFood from "../helpers/getRandomFood";
 import { isDown, isLeft, isRight, isUp } from "../helpers/input";
 
@@ -69,8 +69,16 @@ export default function useSnakeGame() {
           y: prevSnake[0].y + directionRef.current.y,
         };
 
-        // TODO 5 : Handle wall collision
-        // TODO 5 : Handle self collision
+        if (didCollideWithWall(newHead, BOARD_SIZE)) {
+          setGameOver(true);
+          return prevSnake;
+        }
+
+        if (didCollideWithSelf(prevSnake, newHead)) {
+          setGameOver(true);
+          return prevSnake;
+        }
+
         let newSnake = null;
 
         if (didCollideWithFood(newHead, food)) {
