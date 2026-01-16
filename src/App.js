@@ -1,11 +1,12 @@
 import "./App.css";
+import Food from "./components/Food";
 import GameBoard from "./components/GameBoard";
 import Snake from "./components/Snake";
 
 import useSnakeGame from "./hooks/useSnakeGame";
 
 function App() {
-  const { BOARD_SIZE, snake } = useSnakeGame();
+  const { BOARD_SIZE, snake, food } = useSnakeGame();
 
   return (
     <div className="snake-app">
@@ -15,7 +16,7 @@ function App() {
 
       <GameBoard boardSize={BOARD_SIZE}>
         <Snake snake={snake} />
-        {/* TODO 4 : Render the food */}
+        <Food food={food} />
       </GameBoard>
 
       {/* TODO 5 : Conditionally render the game over overlay */}

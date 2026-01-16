@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { submitScore } from "../api/leaderboard";
+import { didCollideWithFood } from "../helpers/collisions";
+import getRandomFood from "../helpers/getRandomFood";
 import { isDown, isLeft, isRight, isUp } from "../helpers/input";
 
 const BOARD_SIZE = 16;
@@ -18,7 +20,7 @@ export default function useSnakeGame() {
   const directionRef = useRef(INITIAL_DIRECTION);
   directionRef.current = direction;
 
-  // TODO 4 : Add food state
+  const [food, setFood] = useState(getRandomFood(snake, BOARD_SIZE));
 
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -67,17 +69,26 @@ export default function useSnakeGame() {
           y: prevSnake[0].y + directionRef.current.y,
         };
 
-        return [newHead, ...prevSnake.slice(0, -1)];
-      });
+        // TODO 5 : Handle wall collision
+        // TODO 5 : Handle self collision
+        // TODO 4 : Handle food eating
+        let newSnake = null;
 
-      // TODO 5 : Handle wall collision
-      // TODO 5 : Handle self collision
-      // TODO 4 : Handle food eating
-      // TODO 6 : Update score
+        if (didCollideWithFood(newHead, food)) {
+          newSnake = [newHead, ...prevSnake];
+          setFood(getRandomFood(newSnake, BOARD_SIZE));
+        } else {
+          newSnake = [newHead, ...prevSnake.slice(0, -1)];
+        }
+
+        // TODO 6 : Update score
+
+        return newSnake;
+      });
     }, SPEED);
 
     return () => clearInterval(interval);
-  }, [gameOver, started]);
+  }, [food, gameOver, started]);
 
   // Submit score when game over
   useEffect(() => {
@@ -104,8 +115,7 @@ export default function useSnakeGame() {
   return {
     BOARD_SIZE,
     snake,
-    // TODO 4 : Add food state
-    // food,
+    food,
     score,
     gameOver,
     handleRestart,
