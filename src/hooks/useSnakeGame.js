@@ -11,7 +11,7 @@ const SPEED = 120;
 const ALL_DIRECTIONS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d"];
 
 export default function useSnakeGame() {
-  // TODO 2 : Add snake state
+  const [snake, setSnake] = useState(INITIAL_SNAKE);
 
   // TODO 3 : Add direction state and ref
 
@@ -43,13 +43,23 @@ export default function useSnakeGame() {
   useEffect(() => {
     if (!started || gameOver) return;
 
-    // TODO 2 : Create a new interval to move the snake
-    // TODO 2 : Update snake state to move
-    // Move snake by adding new head based on direction
-    // TODO 5 : Handle wall collision
-    // TODO 5 : Handle self collision
-    // TODO 4 : Handle food eating
-    // TODO 6 : Update score
+    const interval = setInterval(() => {
+      setSnake((prevSnake) => {
+        const newHead = {
+          x: prevSnake[0].x + INITIAL_DIRECTION.x,
+          y: prevSnake[0].y + INITIAL_DIRECTION.y,
+        };
+
+        return [newHead, ...prevSnake.slice(0, -1)];
+      });
+
+      // TODO 5 : Handle wall collision
+      // TODO 5 : Handle self collision
+      // TODO 4 : Handle food eating
+      // TODO 6 : Update score
+    }, SPEED);
+
+    return () => clearInterval(interval);
   }, [gameOver, started]);
 
   // Submit score when game over
@@ -65,7 +75,7 @@ export default function useSnakeGame() {
 
   // Reset the state when we play again
   function handleRestart() {
-    // TODO 2 : Reset the snake state
+    setSnake(INITIAL_SNAKE);
     // TODO 3 : Reset the direction state
     // TODO 4 : Reset the food state
 
@@ -76,7 +86,7 @@ export default function useSnakeGame() {
 
   return {
     BOARD_SIZE,
-    snake: INITIAL_SNAKE,
+    snake,
     // TODO 4 : Add food state
     // food,
     score,
