@@ -1,5 +1,4 @@
-// TODO 7 : Add Api base URL
-const API_BASE = "";
+const API_BASE = "https://snake-game-leaderboard-db.onrender.com";
 
 export async function getTopScores() {
   const res = await fetch(`${API_BASE}/leaderboard/top`);

@@ -2,6 +2,7 @@ import "./App.css";
 import Food from "./components/Food";
 import GameBoard from "./components/GameBoard";
 import GameOver from "./components/GameOver";
+import Leaderboard from "./components/Leaderboard";
 import Score from "./components/Score";
 import Snake from "./components/Snake";
 
@@ -22,7 +23,8 @@ function App() {
 
       {gameOver && <GameOver score={score} handleRestart={handleRestart} />}
 
-      {/* TODO 7 : Add leaderboard */}
+      <Leaderboard />
+
       <footer className="footer">Made with React • Hackathon Workshop</footer>
     </div>
   );

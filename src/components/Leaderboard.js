@@ -4,19 +4,16 @@ import { getTopScores } from "../api/leaderboard";
 
 export default function Leaderboard() {
   const [scores, setScores] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchScores() {
       try {
-        setLoading(true);
         const data = await getTopScores();
         setScores(data);
       } catch (err) {
+        console.error(err);
         setError("Could not load leaderboard");
-      } finally {
-        setLoading(false);
       }
     }
 
@@ -26,7 +23,6 @@ export default function Leaderboard() {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <div>Loading leaderboard...</div>;
   if (error) return <div>{error}</div>;
 
   return (
